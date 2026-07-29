@@ -11,34 +11,34 @@ This selection for variable a guarantees an invertible cipher.
 
 Algorithm:
 START
-	DECLARE CHAR ARRAY Passcode
-	DECLARE CHAR ARRAY SecretCode
+	DECLARE CHAR ARRAY Plaintext
+	DECLARE CHAR ARRAY Ciphertext
 	DECLARE CHAR Continue
 	DO
 		PRINT "Select an integer 0 - 25: "
-		READ AddInt
+		READ AddKey
 		PRINT "Select a number coprime to 26 (1,3,5,7,9,11,15,17,19,21,23,25): "
-		READ MultInt
+		READ MultKey
 		PRINT "Enter a word: "
-		READ Passcode
-		FOR (int i = 0; Passcode[i]; i++)
-			SecretCode[i] = Passcode[i]
-			IF (SecretCode[i] > 96)
-				SecretCode[i] = SecretCode[i]-32
+		READ Plaintext
+		FOR (int i = 0; Plaintext[i]; i++)
+			Ciphertext[i] = Plaintext[i]
+			IF (Ciphertext[i] > 96)
+				Ciphertext[i] = Ciphertext[i]-32
 			ENDIF
-			SecretCode[i] = (SecretCode[i] - 64) % 26
-			SecretCode[i] = (SecretCode[i] * MultInt + AddInt) % 26
-			IF (SecretCode[i] == 0)
-				SecretCode[i] = SecretCode[i] + 26
+			Ciphertext[i] = (Ciphertext[i] - 64) % 26
+			Ciphertext[i] = (Ciphertext[i] * MultKey + AddKey) % 26
+			IF (Ciphertext[i] == 0)
+				Ciphertext[i] = Ciphertext[i] + 26
 			ENDIF
-			SecretCode[i] = SecretCode[i] + 64
+			Ciphertext[i] = Ciphertext[i] + 64
 		ENDIF
-		PRINT "YOUR PASSCODE: "
-		FOR (int i = 0; Passcode[i]; i++)
-			PRINT Passcode[i]
+		PRINT "YOUR Plaintext: "
+		FOR (int i = 0; Plaintext[i]; i++)
+			PRINT Plaintext[i]
 		ENDIF
 		NEW LINE
-		PRINT "EQUATION: c = " MultInt "p + " AddInt " mod 26"
+		PRINT "EQUATION: c = " MultKey "p + " AddKey " mod 26"
 		NEW LINE
 		PRINT " CIPHER TABLE: "
 		NEWLINE
@@ -49,16 +49,16 @@ START
 				PRINT (char) i + 64 + 32
 			ENDIF
 			PRINT " -- "
-			IF ( (i * MultInt + AddInt) % 26 == 0)
+			IF ( (i * MultKey + AddKey) % 26 == 0)
 				PRINT "Z"
 			ELSE
-				PRINT (char) ((i * MultInt + AddInt) % 26) + 64
+				PRINT (char) ((i * MultKey + AddKey) % 26) + 64
 			ENDIF
 			NEWLINE
 		ENDIF
 		PRINT "SECRET CODE: "
-		FOR (int i = 0; SecretCode[i]; i++)
-			PRINT SecretCode[i]
+		FOR (int i = 0; Ciphertext[i]; i++)
+			PRINT Ciphertext[i]
 		ENDIF
 		PRINT "Enter another word? (Y/N): 
 		READ Continue
@@ -70,51 +70,51 @@ STOP
 
 int main() {
 
-	char Passcode[100], SecretCode[100], Continue, Table;
-	int MultInt, AddInt;
+	char Plaintext[100], Ciphertext[100], Continue, Table;
+	int MultKey, AddKey;
 
 	do {
 		printf("Enter an integer 0-25: "); // Get 'b' in the equation
-		scanf("%d", &AddInt);
+		scanf("%d", &AddKey);
 		printf("Enter an integer coprime to 26 (1,3,5,7,9,11,15,17,19,21,23,25): "); // Get 'a' in the equation
-		scanf("%d", &MultInt);
+		scanf("%d", &MultKey);
 		printf("Enter a word: "); // Get a word at most 99 letters
-		scanf("%99s", &Passcode);
+		scanf("%99s", &Plaintext);
 
 
-		for (int i = 0; Passcode[i]; i++) { // Loop through each letter and encode it with our equation
+		for (int i = 0; Plaintext[i]; i++) { // Loop through each letter and encode it with our equation
 
-			SecretCode[i] = Passcode[i]; // Copy it to new matrix
+			Ciphertext[i] = Plaintext[i]; // Copy it to new matrix
 
-			if (SecretCode[i] > 96) { // Turn the character uppercase
-				SecretCode[i] = SecretCode[i] - 32;
+			if (Ciphertext[i] > 96) { // Turn the character uppercase
+				Ciphertext[i] = Ciphertext[i] - 32;
 			}
 
-			SecretCode[i] = (SecretCode[i] - 64) % 26; // Get into mathematical form
-			SecretCode[i] = (SecretCode[i] * MultInt + AddInt) % 26; // Use equation to solve a = MultInt, b = AddInt, and p = SecretCode[i]
+			Ciphertext[i] = (Ciphertext[i] - 64) % 26; // Get into mathematical form
+			Ciphertext[i] = (Ciphertext[i] * MultKey + AddKey) % 26; // Use equation to solve a = MultKey, b = AddKey, and p = Ciphertext[i]
 
-			if (SecretCode[i] == 0) { // Account for Z = 0 and put it after Y
-				SecretCode[i] = SecretCode[i] + 26;
+			if (Ciphertext[i] == 0) { // Account for Z = 0 and put it after Y
+				Ciphertext[i] = Ciphertext[i] + 26;
 			}
 
 
-			SecretCode[i] = SecretCode[i] + 64; // Get into Unicode format
+			Ciphertext[i] = Ciphertext[i] + 64; // Get into Unicode format
 
-			SecretCode[i + 1] = 0; // Make sure the last array value is null
+			Ciphertext[i + 1] = 0; // Make sure the last array value is null
 		}
 
-		printf("Equation: c = %d p + %d mod 26\n", MultInt, AddInt); // Display Equation used
+		printf("Equation: c = %d p + %d mod 26\n", MultKey, AddKey); // Display Equation used
 
 
 		printf("Your Word: "); // Display the user's original word
-		for (int i = 0; Passcode[i]; i++) {
-			printf("%c", Passcode[i]);
+		for (int i = 0; Plaintext[i]; i++) {
+			printf("%c", Plaintext[i]);
 		}
 		printf("\n");
 
 		printf("Your Secret Word: "); // Display the user's secret word
-		for (int i = 0; SecretCode[i]; i++) {
-			printf("%c", SecretCode[i]);
+		for (int i = 0; Ciphertext[i]; i++) {
+			printf("%c", Ciphertext[i]);
 		}
 		printf("\n");
 
@@ -134,11 +134,11 @@ int main() {
 
 				printf(" -- "); // Adds visual pattern for readability
 
-				if ((i * MultInt + AddInt) % 26 == 0) { // Deals with Z = 0 in math and displays it
+				if ((i * MultKey + AddKey) % 26 == 0) { // Deals with Z = 0 in math and displays it
 					printf("Z");
 				}
 				else {
-					printf("%c", (char)((i * MultInt + AddInt) % 26) + 64); // Displays the character
+					printf("%c", (char)((i * MultKey + AddKey) % 26) + 64); // Displays the character
 				}
 
 				printf("\n"); // New line needed after each loop
