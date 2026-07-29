@@ -53,3 +53,13 @@ dkms.conf
 
 # debug information files
 *.dwo
+*.recipe
+*.log
+*.tlog
+*.user
+*.ipch
+.vs/AffineCrypto.slnx/v18/DocumentLayout.json
+.vs/AffineCrypto.slnx/v18/DocumentLayout.backup.json
+.vs/AffineCrypto.slnx/v18/.suo
+*.vsidx
+*.db

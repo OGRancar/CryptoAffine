@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="AffineCrypto/AffineCrypto.vcxproj" Id="e041e514-6694-4695-9d38-3174488a983d" />
+</Solution>
